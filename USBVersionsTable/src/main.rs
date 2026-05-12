@@ -24,20 +24,29 @@ impl Default for UsbApp {
         Self {
             available_rates: vec![ // usb rates
                 "5 Gbps".to_string(),
+                "20 Gbps".to_string(),
+                "1.5 Mbps".to_string(),
                 "40 Gbps".to_string(),
+                "12 Mbps".to_string(),
                 "480 Mbps".to_string(),
                 "10 Gbps".to_string(),
             ],
             table_data: vec![ // initial table
-                UsbRow { version: "USB 2.0".into(),       rate: "???".into() },
+                UsbRow { version: "USB 2.0 LowSpeed".into(),       rate: "???".into() },
+                UsbRow { version: "USB 2.0 FullSpeed".into(),       rate: "???".into() },
+                UsbRow { version: "USB 2.0 HiSpeed".into(),       rate: "???".into() },
                 UsbRow { version: "USB 3.2 Gen 1".into(), rate: "???".into() },
                 UsbRow { version: "USB 3.2 Gen 2".into(), rate: "???".into() },
+                UsbRow { version: "USB 3.2 Gen 2x2".into(), rate: "???".into() },
                 UsbRow { version: "USB 4".into(),         rate: "???".into() },
             ],
             correct_rates: [ // correct order for the rates
-                ("USB 2.0".into(), "480 Mbps".into()), 
+                ("USB 2.0 LowSpeed".into(), "1.5 Mbps".into()),
+                ("USB 2.0 FullSpeed".into(), "12 Mbps".into()),
+                ("USB 2.0 HiSpeed".into(), "480 Mbps".into()),
                 ("USB 3.2 Gen 1".into(), "5 Gbps".into()),
                 ("USB 3.2 Gen 2".into(), "10 Gbps".into()),
+                ("USB 3.2 Gen 2x2".into(), "20 Gbps".into()),
                 ("USB 4".into(), "40 Gbps".into()),
             ]
             .into_iter()
