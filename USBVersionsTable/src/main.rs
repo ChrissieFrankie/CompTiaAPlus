@@ -135,16 +135,36 @@ impl eframe::App for UsbApp {
                         let is_active_drop_target = response.hovered() // it's being hovered
                             && egui::DragAndDrop::has_any_payload(ctx);
 
-                        
+                        if let Some(ref val) = dropped { // perform drop
+                            if response.hovered() {
+                                if let Some(_i) = self.available_rates.iter().position(|r| r == val.as_str()) {
+                                    if self.correct_rates.get(&row.version.to_string()).expect("REASON").to_string() == val.to_string()
+                                    {
+                                        row.rate = val.clone(); 
+                                    }
+                                    else {
+                                        row.rate = "WRONG".to_owned();
+                                    }
+
+                                }
+                            }
+                        }
+
                         let color = if is_active_drop_target {
                             egui::Color32::LIGHT_BLUE               // drop here
-                        } else if row.rate != "???" {
+                        }
+                        else if row.rate == "WRONG" {
+                            egui::Color32::RED
+                        } 
+                        else if row.rate != "???" {
                             egui::Color32::from_rgb(100, 180, 100) // answered
-                        } else {
+                        }
+                        else {
                             egui::Color32::from_gray(90)            // empty
                         };
 
                         ui.painter().rect_filled(rect, 6.0, color); // paint drop
+
                         ui.painter().rect_stroke(
                             rect, 6.0,
                             egui::Stroke::new(
@@ -161,20 +181,7 @@ impl eframe::App for UsbApp {
                         );
 
                     
-                        if let Some(ref val) = dropped { // perform drop
-                            if response.hovered() {
-                                if let Some(i) = self.available_rates.iter().position(|r| r == val.as_str()) {
-                                    if self.correct_rates.get(&row.version.to_string()).expect("REASON").to_string() == val.to_string()
-                                    {
-                                        row.rate = val.clone(); 
-                                    }
-                                    else {
-                                        row.rate = "WRONG".to_owned();
-                                    }
 
-                                }
-                            }
-                        }
 
                         ui.end_row();
                     }
