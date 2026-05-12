@@ -1,4 +1,4 @@
-use eframe::egui; // use gui library
+use eframe::egui::{self, ahash::HashMap}; // use gui library
 fn main() -> Result<(), eframe::Error> {
     let options = eframe::NativeOptions::default(); // default window settings
     eframe::run_native(
@@ -16,16 +16,17 @@ struct UsbRow { // a row of the versions table
 struct UsbApp { // app data
     available_rates: Vec<String>, // available responses
     table_data: Vec<UsbRow>,      // empty response boxes
+    correct_rates: HashMap<String, String>, // correct rates order
 }
 
 impl Default for UsbApp {
     fn default() -> Self {
         Self {
             available_rates: vec![ // usb rates
-                "480 Mbps".to_string(),
                 "5 Gbps".to_string(),
-                "10 Gbps".to_string(),
                 "40 Gbps".to_string(),
+                "480 Mbps".to_string(),
+                "10 Gbps".to_string(),
             ],
             table_data: vec![ // initial table
                 UsbRow { version: "USB 2.0".into(),       rate: "???".into() },
@@ -33,6 +34,14 @@ impl Default for UsbApp {
                 UsbRow { version: "USB 3.2 Gen 2".into(), rate: "???".into() },
                 UsbRow { version: "USB 4".into(),         rate: "???".into() },
             ],
+            correct_rates: [ // correct order for the rates
+                ("USB 2.0".into(), "480 Mbps".into()), 
+                ("USB 3.2 Gen 1".into(), "5 Gbps".into()),
+                ("USB 3.2 Gen 2".into(), "10 Gbps".into()),
+                ("USB 4".into(), "40 Gbps".into()),
+            ]
+            .into_iter()
+            .collect(),
         }
     }
 }
@@ -154,7 +163,16 @@ impl eframe::App for UsbApp {
                     
                         if let Some(ref val) = dropped { // perform drop
                             if response.hovered() {
-                                row.rate = val.clone(); 
+                                if let Some(i) = self.available_rates.iter().position(|r| r == val.as_str()) {
+                                    if self.correct_rates.get(&row.version.to_string()).expect("REASON").to_string() == val.to_string()
+                                    {
+                                        row.rate = val.clone(); 
+                                    }
+                                    else {
+                                        row.rate = "WRONG".to_owned();
+                                    }
+
+                                }
                             }
                         }
 
