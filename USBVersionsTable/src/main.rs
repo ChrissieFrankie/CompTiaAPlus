@@ -21,17 +21,24 @@ struct UsbApp { // app data
 
 impl Default for UsbApp {
     fn default() -> Self {
-        Self {
-            available_rates: vec![ // usb rates
-                "5 Gbps".to_string(),
-                "20 Gbps".to_string(),
-                "1.5 Mbps".to_string(),
-                "40 Gbps".to_string(),
-                "12 Mbps".to_string(),
-                "480 Mbps".to_string(),
-                "10 Gbps".to_string(),
-            ],
-            table_data: vec![ // initial table
+        use rand::seq::SliceRandom;
+        use rand::thread_rng;
+
+        let mut rng = thread_rng();
+
+        let mut available_rates= vec![ // usb rates
+        "5 Gbps".to_string(),
+        "20 Gbps".to_string(),
+        "1.5 Mbps".to_string(),
+        "40 Gbps".to_string(),
+        "12 Mbps".to_string(),
+        "480 Mbps".to_string(),
+        "10 Gbps".to_string(),
+        ];
+        available_rates.shuffle(&mut rng);
+
+
+        let mut table_data = vec![ // initial table
                 UsbRow { version: "USB 2.0 LowSpeed".into(),       rate: "???".into() },
                 UsbRow { version: "USB 2.0 FullSpeed".into(),       rate: "???".into() },
                 UsbRow { version: "USB 2.0 HiSpeed".into(),       rate: "???".into() },
@@ -39,7 +46,12 @@ impl Default for UsbApp {
                 UsbRow { version: "USB 3.2 Gen 2".into(), rate: "???".into() },
                 UsbRow { version: "USB 3.2 Gen 2x2".into(), rate: "???".into() },
                 UsbRow { version: "USB 4".into(),         rate: "???".into() },
-            ],
+            ];
+            table_data.shuffle(&mut rng);
+
+        Self {
+            available_rates,
+            table_data,
             correct_rates: [ // correct order for the rates
                 ("USB 2.0 LowSpeed".into(), "1.5 Mbps".into()),
                 ("USB 2.0 FullSpeed".into(), "12 Mbps".into()),
