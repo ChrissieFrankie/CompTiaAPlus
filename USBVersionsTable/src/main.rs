@@ -208,7 +208,7 @@ impl eframe::App for UsbApp {
                         // transfer rate drop zone
                         let (rect, response) = ui.allocate_at_least(
                             // hover detect
-                            egui::vec2(160.0, 34.0),
+                            egui::vec2(175.0, 34.0),
                             egui::Sense::hover(),
                         );
 
@@ -268,7 +268,7 @@ impl eframe::App for UsbApp {
 
                         // market name drop zone
                         let (rect2, response2) =
-                            ui.allocate_at_least(egui::vec2(160.0, 34.0), egui::Sense::hover());
+                            ui.allocate_at_least(egui::vec2(175.0, 34.0), egui::Sense::hover());
 
                         if let Some(ref val) = dropped {
                             // perform drop
