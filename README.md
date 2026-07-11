@@ -1,3 +1,5 @@
+UPDATE THE WORLD CUP HAS DISTRACTD ME ENTIRELY
+
 # CompTia A+ programs
 
 programs to help me score as high (100 hopefully) as possible on the first try
